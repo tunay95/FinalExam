@@ -110,7 +110,7 @@ namespace FinalLastExam.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Surname")
+                    b.Property<string>("Work")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

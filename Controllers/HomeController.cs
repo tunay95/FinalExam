@@ -2,7 +2,6 @@
 using FinalLastExam.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Diagnostics;
 
 namespace FinalLastExam.Controllers
 {

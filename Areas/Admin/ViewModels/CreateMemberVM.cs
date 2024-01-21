@@ -1,13 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-
-namespace FinalLastExam.Models
+﻿namespace FinalLastExam.Areas.Admin.ViewModels
 {
-    public class Member:BaseEntity
-    {
+    public class CreateMemberVM
+    { 
         public string Name { get; set; }
         public string Work { get; set; }
         public string? ImgUrl { get; set; }
-        [NotMapped]
         public IFormFile? Image { get; set; }
+
     }
 }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FinalLastExam.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240121061902_CreatedTables")]
-    partial class CreatedTables
+    [Migration("20240121082424_CreateTables")]
+    partial class CreateTables
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -112,7 +112,7 @@ namespace FinalLastExam.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Surname")
+                    b.Property<string>("Work")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
