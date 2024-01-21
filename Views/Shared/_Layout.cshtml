@@ -1,4 +1,7 @@
-﻿<!DOCTYPE HTML>
+﻿@using FinalLastExam.Models
+@model List<Member>
+
+<!DOCTYPE HTML>
 <html>
 <head>
     <title>Studio</title>
@@ -28,15 +31,31 @@
                         <li><a class="page-scroll" href="#page-top">Home</a></li>
                         <li><a class="page-scroll" href="#services">Services</a></li>
                         <li><a class="page-scroll" href="#port">Portfolio</a></li>
-                        <li><a class="page-scroll" href="#about">About</a></li>
-                        <li><a class="page-scroll" href="#team">Team</a></li>
-                        <li><a class="page-scroll" href="#contact">Contact</a></li>
+                        @if(User.Identity.IsAuthenticated){
+                            <li>
+                                <a>
+                                    @User.Identity.Name
+                                </a>
+                            </li>
+                            <li>
+                                <a asp-action="Index" asp-controller="Home">
+                                    LogOut
+                                </a>
+                            </li>
+                            @if(User.IsInRole("Admin")){
+                                <li>
+                                    <a asp-area="Admin" asp-action="index" asp-controller="Dashoard">
+                                        Admin PAnel
+                                    </a>
+                                </li>
+                            }
+                        }
                     </ul>
                 </div>
             </div><!-- /.container-fluid -->
         </nav>
         <!-- Header -->
-        <header style="background-image:url(assets/img/3218_Computer-power-abstract-binary-code.jpg)">
+        <header style="background-image:url(~/assets/img/3218_Computer-power-abstract-binary-code.jpg)">
             <div class="container">
                 <div class="intro-text">
                     <div class="intro-lead-in">Welcome To Our Studio!</div>
