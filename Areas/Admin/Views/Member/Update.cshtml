@@ -1,5 +1,24 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@using FinalLastExam.Areas.Admin.ViewModels
+@model UpdateMemberVM
+
+<div class="container" >
+
+    <form method="post" enctype="multipart/form-data">
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label">Name</label>
+            <input asp-for="Name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            <span asp-validation-for="Name" style="color:red"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Work" class="form-label">Work</label>
+            <input asp-for="Work" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            <span asp-validation-for="Image" style="color:red"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Image" class="form-label">Multiple files input example</label>
+            <input asp-for="Image" type="file" id="formFileMultiple" multiple>
+            <span asp-validation-for="Image" style="color:red"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>

@@ -2,25 +2,27 @@
 {
     public static class FileManager
     {
-        public static string Upload(this IFormFile File,string envpath,string FolderName)
+        public static string Upload(this IFormFile File, string envpath, string folderName)
         {
-            string filename = File.FileName;
-            filename= Guid.NewGuid().ToString()+filename;
-            string path = envpath+FolderName+filename;
-            using (FileStream fileStream = new FileStream(path, FileMode.Create))
+            string fileName = File.FileName;
+            fileName = Guid.NewGuid().ToString() + fileName;
+            string path = envpath + folderName + fileName;
+            using (FileStream stream = new FileStream(path, FileMode.Create))
             {
-                File.CopyTo(fileStream);
-            };
-            return filename;
-        }
-        public static bool CheckContent(this IFormFile File , string content)
-        {
-;           return File.ContentType.Contains(content);
+                File.CopyTo(stream);
+
+            }
+            return fileName;
         }
 
-        public static bool ChecckLength(this IFormFile File,int length)
+        public static bool CheckContent(this IFormFile File, string content)
         {
-            return File.Length / 1024 / 1024 <= 3;
+            return File.ContentType.Contains(content);
+        }
+
+        public static bool CheckLength(this IFormFile File, int length)
+        {
+            return File.Length <= length *1024 *1024;
         }
     }
 }

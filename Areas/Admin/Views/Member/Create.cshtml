@@ -3,20 +3,20 @@
 
 <div class="container"> 
 
-<form method="post">
+<form method="post" enctype="multipart/form-data"> 
     <div class="mb-3">
         <label asp-for="Name" class="form-label">Name</label>
         <input asp-for ="Name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-        <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+            <span asp-validation-for="Name" style="color:red"></span>
     </div>
         <div class="mb-3">
             <label asp-for="Work" class="form-label">Work</label>
             <input asp-for="Work" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+            <span asp-validation-for="Image" style="color:red"></span>
         </div>
         <div class="mb-3">
             <label asp-for="Image" class="form-label">Multiple files input example</label>
-            <input asp-for="Image" type="file" id="formFileMultiple" multiple>
+            <input asp-for="Image"  id="formFileMultiple" multiple>
         </div>
     <button type="submit" class="btn btn-primary">Submit</button>
 </form>

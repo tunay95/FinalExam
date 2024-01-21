@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using NuGet.Protocol.Plugins;
 
 namespace FinalLastExam.Areas.Admin.Controllers
 {
@@ -26,7 +27,7 @@ namespace FinalLastExam.Areas.Admin.Controllers
             _env = env;
         }
 
-        //[Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             List<Member> members = await _dbContext.Members.ToListAsync();
@@ -39,34 +40,32 @@ namespace FinalLastExam.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        //[Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Create(CreateMemberVM createMemberVM)
         {
-            if (!ModelState.IsValid) return View();
-
-            if (!createMemberVM.Image.CheckContent("image"))
+            if (!ModelState.IsValid)
             {
-                ModelState.AddModelError("Image", "Enter the right format");
                 return View(createMemberVM);
             }
 
-            if (!createMemberVM.Image.ChecckLength(3000000))
+            if (!createMemberVM.Image.CheckLength(3000000))
             {
-                ModelState.AddModelError("Image", "Enter the right size,less than 3mb");
-                return View(createMemberVM);
+                ModelState.AddModelError("Image", " you can't upload more than 2 mb ");
+                return View();
             }
+
             Member member = new Member()
             {
                 Name = createMemberVM.Name,
                 Work = createMemberVM.Work,
-                //Image = createMemberVM.Image.Upload(_env.WebRootPath, @"/Upload/Images/"),
+                ImgUrl = createMemberVM.Image.Upload(_env.WebRootPath, @"/Upload/Images/")
             };
             await _dbContext.Members.AddAsync(member);
             await _dbContext.SaveChangesAsync();
-            return RedirectToAction(nameof(Index), "Member");
+            return RedirectToAction("Index");
         }
 
-        //[Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(int id)
         {
             if(id<=0) return View();
@@ -80,45 +79,33 @@ namespace FinalLastExam.Areas.Admin.Controllers
             return View(updateMemberVM);
         }
 
-        //[HttpPost]
-        //[Authorize(Roles ="Admin")]
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Update(UpdateMemberVM updateMemberVM)
         {
-            if (!ModelState.IsValid) return View();
-            Member member = await _dbContext.Members.Where(x=>x.Id == updateMemberVM.Id).FirstOrDefaultAsync();
-            if (member == null) throw new Exception(" Member can't be null! ");
-
-            if(updateMemberVM.Image is not null)
+            if (!ModelState.IsValid)
             {
-                if (!updateMemberVM.Image.CheckContent("image"))
-                {
-                    ModelState.AddModelError("Image", "Enter the right format");
-                    return View(updateMemberVM);
-                }
-                if (!updateMemberVM.Image.ChecckLength(3000000))
-                {
-                    ModelState.AddModelError("Image", "Enter the right size,less than 3mb");
-                    return View(updateMemberVM);
-                }
+                return View();
             }
+            if (updateMemberVM.Id <= 0) throw new Exception("Id can't be less than zero");
+            var member = _dbContext.Members.FirstOrDefault<Member>(x => x.Id == updateMemberVM.Id);
+            if (member == null) throw new Exception("Fruit can't be null");
 
-            member.ImgUrl = updateMemberVM.Image.Upload(_env.WebRootPath, @"/Upload/images/");
 
-            member.Name=updateMemberVM.Name;
-            member.Work=updateMemberVM.Work;
-            member.Image = updateMemberVM.Image;
-
-            _dbContext.Update(member);
+            member.Name = updateMemberVM.Name;
+            member.Work = updateMemberVM.Work;
+            member.ImgUrl = updateMemberVM.Image.Upload(_env.WebRootPath, @"/Upload/Images");
             await _dbContext.SaveChangesAsync();
-            return RedirectToAction(nameof(Index), "Member"); 
-        }
+            return RedirectToAction("Index");
 
-        //[Authorize(Roles ="Admin")]
-        public  IActionResult Delete(int id)
-        {
-            Member member = _dbContext.Members.Where(x => x.Id == id).FirstOrDefault();
-            _dbContext.Members.Remove(member);
-            return RedirectToAction(nameof(Index), "Home");
         }
+            [Authorize(Roles = "Admin")]
+            public async Task<IActionResult> Delete(int id)
+            {
+                Member member = await _dbContext.Members.Where(x => x.Id == id).FirstOrDefaultAsync();
+                 _dbContext.Members.Remove(member);
+             await _dbContext.SaveChangesAsync();
+            return RedirectToAction(nameof(Index), "Home");
+            }
    }
 }
